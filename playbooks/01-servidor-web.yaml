@@ -1,7 +1,7 @@
 ---
 # Primer ejemplo de pruebas con Playbooks
 - name: Disponibilizar servicio WEB
-  hosts: nodo1
+  hosts: centos
   tasks:
     - name: Instalar Servicio para WEB - httpd
       yum:
