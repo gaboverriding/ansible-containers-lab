@@ -1,0 +1,18 @@
+---
+# Tercer ejemple de Playbooks con Usuario
+
+- name: Crear usuarios
+  hosts: centos
+  vars:
+    usuarios:
+      - x
+      - y
+      - z
+
+  tasks:
+    - name: Crear usuario {{ item }}
+      user:
+        name: "{{ item }}"
+        password: "{{ 'hola' | password_hash('sha512') }}"
+      with_items: "{{ usuarios }}"
+...
