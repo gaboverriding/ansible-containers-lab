@@ -1,0 +1,32 @@
+- name: prueba con variables
+  hosts: nodo1
+  vars_files: ../vars/users-dictionary-lists.yaml
+  tasks:
+    - name: valida el tipo de dato para usuarios
+      debug:
+        msg: " el tipo de dato de usuarios es: {{ usuarios | type_debug }} "
+
+    - name: valida datos de variables para usuarios
+      debug:
+        msg: >
+          El usuario {{ usuarios['usuarioX']['nombre'] }} tiene como home(ruta) {{ usuarios['usuarioX']['home'] }} 
+          y con shell {{ usuarios['usuarioX']['shell'] }}  
+
+    - name: valida el tipo de dato para paquetes
+      debug:
+        msg: " el tipo de dato de paquetes es: {{ paquetes | type_debug }} "
+
+    - name: valida datos de variables para paquetes
+      debug:
+        msg: >
+          El paquete http para los servidores web es {{ paquetes[0].web_servers.http }}
+
+    - name: recorrer todos los datos de usuarios como diccionario
+      debug:
+        msg: El usuario {{ item }} es del tipo {{ usuarios[item] | type_debug  }}
+      with_items: "{{ usuarios }}"
+
+    - name: recorrer todos los datos de paquetes como lista o arreglo
+      debug:
+        msg: Los paquetes para {{ item }} son del tipo {{ item | type_debug  }}
+      with_items: "{{ paquetes }}"

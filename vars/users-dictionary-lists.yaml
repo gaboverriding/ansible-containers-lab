@@ -1,0 +1,22 @@
+usuarios:
+  usuarioX:
+    nombre: x
+    home: /home/x
+    shell: /bin/bash
+  usuarioY:
+    nombre: y
+    home: /home/y
+    shell: /bin/bash
+  usuarioZ:
+    nombre: z
+    home: /home/z
+    shell: /bin/bash
+paquetes:
+  - web_servers:
+      http: httpd
+      apache: apache2
+  - ftp_servers:
+      ftp: vsftp
+  - db_servers:
+      db: mariadb
+      mysql: mysqld
