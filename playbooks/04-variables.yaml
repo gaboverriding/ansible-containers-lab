@@ -1,32 +1,37 @@
-- name: prueba con variables
+- name: PRUEBAS CON LOS DIFERENTES TIPOS DE VARIABLES EN ANSIBLE
   hosts: nodo1
+  vars:
+    otro_usuario_definido_en_playbook: usuarioPlaybook
+    home_definido_en_playbbok: /home/otro
   vars_files: ../vars/users-dictionary-lists.yaml
   tasks:
-    - name: valida el tipo de dato para usuarios
+    - name: Recuperar datos de variables definidas en el playbook ejemplo {{ otro_usuario_definido_en_playbook }}
+      debug:
+        msg: el home definido en el playbook es {{ home_definido_en_playbbok }} 
+
+    - name: Validar el tipo de dato para la variable usuarios
       debug:
         msg: " el tipo de dato de usuarios es: {{ usuarios | type_debug }} "
 
-    - name: valida datos de variables para usuarios
+    - name: Validar los datos para la variable  usuarios
       debug:
-        msg: >
-          El usuario {{ usuarios['usuarioX']['nombre'] }} tiene como home(ruta) {{ usuarios['usuarioX']['home'] }} 
+        msg: el usuario {{ usuarios['usuarioX']['nombre'] }} tiene como home(ruta) {{ usuarios['usuarioX']['home'] }} 
           y con shell {{ usuarios['usuarioX']['shell'] }}  
 
-    - name: valida el tipo de dato para paquetes
+    - name: Validar el tipo de dato para la variable paquetes
       debug:
         msg: " el tipo de dato de paquetes es: {{ paquetes | type_debug }} "
 
-    - name: valida datos de variables para paquetes
+    - name: Validar los datos para la variable paquetes
       debug:
-        msg: >
-          El paquete http para los servidores web es {{ paquetes[0].web_servers.http }}
+        msg: el paquete http para los servidores web es {{ paquetes[0].web_servers.http }}
 
-    - name: recorrer todos los datos de usuarios como diccionario
+    - name: Recorrer todos los datos de usuarios como diccionario
       debug:
-        msg: El usuario {{ item }} es del tipo {{ usuarios[item] | type_debug  }}
+        msg: el usuario {{ item }} es del tipo {{ usuarios[item] | type_debug  }}
       with_items: "{{ usuarios }}"
 
-    - name: recorrer todos los datos de paquetes como lista o arreglo
+    - name: Recorrer todos los datos de paquetes como lista o arreglo
       debug:
-        msg: Los paquetes para {{ item }} son del tipo {{ item | type_debug  }}
+        msg: los paquetes para {{ item }} son del tipo {{ item | type_debug  }}
       with_items: "{{ paquetes }}"
