@@ -1,0 +1,16 @@
+- name: INSTALA CUSTOM FACT
+  hosts: nodo1,nodo2
+  vars:
+    ruta_de_facts: /etc/ansible/facts.d
+    archivo_facts: /home/ansible/ansible-containers-lab/ejemplos/facts/prueba.fact
+  tasks:
+    - name: Crear directorio para los custom facts
+      file:
+        path: "{{ ruta_de_facts }}"
+        state: directory
+        recurse: yes
+    - name: Instalar custom fact
+      copy:
+        src: "{{ archivo_facts }}"
+        dest: "{{ ruta_de_facts }}"
+

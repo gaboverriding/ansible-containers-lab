@@ -1,0 +1,10 @@
+- name: PRUEBAS CON FACTS
+  hosts: nodo1
+  gather_facts: yes
+  #gather_facts: no
+  tasks:
+    - name: Probar modulo setup
+      debug:
+        #msg: La Arquitectura para {{ ansible_facts['nodename'] }} es {{ ansible_facts['architecture']  }}
+        msg: Variable sin el prefijo {{ ansible_architecture }}
+        #var: ansible_facts
