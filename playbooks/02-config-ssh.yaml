@@ -4,7 +4,7 @@
   hosts: all
   tasks:
   - template:
-      src: motd.j2
+      src: /home/ansible/ansible-containers-lab/templates/motd-utf8.j2
       dest: /etc/motd
       owner: root
       group: root

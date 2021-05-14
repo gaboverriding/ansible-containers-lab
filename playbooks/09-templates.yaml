@@ -1,0 +1,16 @@
+- name: IDENTIFICANDO VARAIBLES
+  hosts: all
+  tasks:
+    - name: Identificar variables
+      debug:
+        msg: "{{ansible_default_ipv4.address}} --> {{ansible_fqdn}} --> {{ansible_hostname}}"
+- name: UTILIZANDO TEMPLATES PARA /etc/hosts
+  hosts: nodo1
+  vars:
+    archivo: /etc/hosts
+  tasks:
+    - name: Generar /etc/hosts al vuelo
+      template:
+        src: /home/ansible/ansible-containers-lab/templates/hosts.j2
+        dest: /tmp/hosts
+

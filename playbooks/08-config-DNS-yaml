@@ -1,0 +1,15 @@
+- name: CONFIGURA EL DNS DE GOOGLE
+  hosts: nodo2
+  tasks:
+    - name: Configurar el DNS 8.8.8.8
+      lineinfile:
+        path: /etc/resolv.conf
+        regexp: '^nameserver 8.8.8.8'
+        line: "nameserver 8.8.8.8"
+        state: present
+    - name: Configurar el DNS 8.8.4.4
+      lineinfile:
+        path: /etc/resolv.conf
+        regexp: '^nameserver 8.8.4.4'
+        line: "nameserver 8.8.4.4"
+        state: present

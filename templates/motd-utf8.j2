@@ -1,0 +1,12 @@
+# {{ansible_managed}}
+Bienvenido al equipo {{ ansible_hostname }} con IP {{ ansible_default_ipv4.address}}
+...
+Soy de la familia {{ ansible_os_family }} distribucion {{ansible_distribution}}
+...
+Version: {{ ansible_distribution_version }}
+...
+Y estos son todos los nodos controlados:
+{% for nodo in groups['all'] %}
+  - {{nodo}}
+{% endfor %}
+
