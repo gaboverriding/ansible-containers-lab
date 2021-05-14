@@ -1,0 +1,8 @@
+- name: PRUEBAS CON VAULT
+  hosts: nodo1
+  vars_files: /home/ansible//ansible-containers-lab/ejemplos/vault/01-ejercicio-vault/vars/usuarios-secrets.yaml
+  tasks:
+    - name: Desplegar los valores de un archivo con datos sensibles
+      debug:
+        msg: el usuario {{item.nombre}} tiene como password {{item.password}} 
+      loop: "{{nuevos_usuarios}}"
