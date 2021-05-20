@@ -1,0 +1,10 @@
+- name: PRUEBAS CON LOS DIFERENTES TIPOS DE VARIABLES EN ANSIBLE
+  hosts: linux
+  #vars_files: /home/ansible/ansible-containers-lab/vars/package.yaml
+  vars:
+    #package: paqueteEnPlaybook
+  tasks:
+    - name: Validar el valor de package en el nodo 
+      debug:
+        msg: el paquete es {{ package }}
+
