@@ -1,0 +1,37 @@
+- name: Instala un servidor de BBDD y crea algunos usuarios, cuando se haga esto se reinicia el servicio
+  hosts: database
+  vars:
+    db_packages:
+      - mariadb-server
+      - MySQL-python
+    db_service: mariadb
+    src_file: 'http://nodo2/archivos/my.cnf'
+    dst_file: /tmp/my6.cnf
+    dst_file2: /tmp/my7.cnf
+  tasks:
+    - name: instalar los paquetes necesarios
+      get_url:
+        url: "{{src_file}}"
+        dest: "{{dst_file}}"
+        force: yes
+      notify: inicia_servicio_bbdd
+    - name: recuperar de un servidor remoto el archivo de configuracion para la BBDD {{dst_file}}
+      get_url:
+        url: "{{src_file}}"
+        dest: "{{dst_file2}}"
+        force: yes
+      notify: 
+        - reinicia_servicio_bbdd
+        - establece_password
+        - inicia_servicio_bbdd
+  handlers:
+    - name: inicia_servicio_bbdd
+      debug:
+        msg: "iniciar el servicio de bbdd"
+    - name: reinicia_servicio_bbdd
+      debug:
+        msg: "reinicia el servicio"
+    - name: establece_password
+      debug:
+        msg: establece password
+

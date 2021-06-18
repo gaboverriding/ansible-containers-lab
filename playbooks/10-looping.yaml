@@ -1,0 +1,9 @@
+- name: pruebas con loops
+  hosts: nodo1
+  vars_files: /home/ansible/ansible-containers-lab/vars/packages.yaml
+  tasks:
+    - name: instalacion de paquetes
+      yum:
+        name: "{{item.name}}"
+        state: "{{item.state}}"
+      loop: "{{packages}}"

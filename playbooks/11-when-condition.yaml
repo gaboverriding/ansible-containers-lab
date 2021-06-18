@@ -1,0 +1,41 @@
+- name: probando when condicional
+  hosts: nodo1,ubuntu1
+  vars:
+    bandera: No
+  tasks:
+    - name: Recuperando el sabor de Linux
+      debug:
+        msg: "el valor de la familia es: {{ansible_os_family}}" 
+    - name: instala vim si eres Red Hat
+      yum:
+        name: vim
+        state: present
+      when: ansible_os_family == "RedHat" and bandera
+    - name: instala nano si eres Debian
+      apt:
+        name: nano
+        state: present
+      when: ansible_os_family == "Debian" and bandera
+    - name: Escribe la memoria libre
+      debug:
+        msg: "la memoria libre es: {{ansible_memfree_mb}}"
+    - name: Condicional en funcion de la memoria
+      debug:
+        msg: "la memoria es menor a 7000 mb"
+      when: ansible_memfree_mb < 6999
+
+    - name: Estatus del servidor Postfix
+      command: systemctl is-active postfix
+      ignore_errors: yes
+      register: postfix_estatus
+    - name: Ver valor de postfix_estatus
+      debug:
+        var: postfix_estatus
+    - name: Manda un mensaje si cumple la condicion del servidor postfix
+      debug:
+        msg: mensaje que esta activo el servicio postfix
+      when: postfix_estatus.rc == 0
+    - name: Validando bandera
+      debug:
+        msg: "bandera habilitada"
+      when: bandera

@@ -1,0 +1,32 @@
+- name: pruebas con el manejo de errores 2
+  hosts: mailservers
+  vars:
+    paquete_web: http
+    paquete_bbdd: mariadb
+    servicio_bbdd: mariadb
+  tasks:
+  - block:
+    - name: ejecuta comando y recupera la respuesta
+      shell:
+        cmd: ls /x
+      register: resultado_commando
+      #ignore_errors: yes
+    - name: instala paquete web {{paquete_web}} que esperamos que truene
+      yum:
+        name: "{{paquete_web}}"
+        state: present
+      #ignore_errors: yes
+      changed_when: "'non-zero' in resultado_commando.msg"
+    rescue:
+    - name: instala paquete bbdd {{paquete_bbdd}}
+      yum:
+        name: "{{paquete_bbdd}}"
+        state: present
+      failed_when: "resultado_commando.rc == 2"
+      changed_when: "'non-zero' in resultado_commando.msg"
+    always:
+    - name: nueva tarea
+      debug:
+        msg: dentro del bloque always
+  
+

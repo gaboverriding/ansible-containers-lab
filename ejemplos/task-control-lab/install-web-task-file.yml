@@ -1,0 +1,11 @@
+- name: instala paquetes
+  yum:
+    name: 
+      - "{{web_package}}"
+      - "{{ssl_package}}"
+    state: present
+  when: inventory_hostname in groups["webservers"] and ansible_memfree_mb > memory
+- name: inicia el servicio web
+  service:
+    name: httpd
+    state: started

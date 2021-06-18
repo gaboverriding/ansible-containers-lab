@@ -1,0 +1,24 @@
+- name: instalar el paquete postfix
+  yum:
+    name: postfix
+    state: present
+  tags:
+    - server
+  notify:
+    - iniciar_postfix
+- name: instalar paquete dovecot
+  yum:
+    name: dovecot
+    state: present
+  notify:
+    - inicia_dovecot
+  tags:
+    - client
+- name: obtener la configuracion de correo postfix 
+  get_url:
+    url: http://192.168.10.4/archivos/main.cf
+    dest: /etc/postfix/main_2.cf
+  tags:
+    - server
+  notify:
+    - reinicia_postfix

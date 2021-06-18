@@ -1,0 +1,22 @@
+- name: pruebas con tags
+  hosts: all
+  vars:
+  tasks:
+    - name: incluir el archivo de tareas
+      include: taskFile-config-correo.yml
+      when: inventory_hostname in groups["mailservers"]
+  handlers:
+    - name: iniciar_postfix
+      service:
+        name: postfix
+        state: started
+    - name: reinicia_postfix
+      service:
+        name: postfix
+        state: restarted
+    - name: inicia_dovecot
+      service:
+        name: dovecot
+        state: started
+
+

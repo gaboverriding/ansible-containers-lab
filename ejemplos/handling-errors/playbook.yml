@@ -1,0 +1,30 @@
+- name: prueba con el manejo de errores
+  hosts: mailservers
+  vars:
+    maildir_path: /home/maildir
+  tasks:
+  - block:
+    - name: copia un archivo que no existe
+      copy:
+        src: "{{maildir_path}}"
+        dest: /home/algo
+      register: resultado_copia
+      # ignore_errors: yes
+    rescue:
+    - name: segunda tarea de prueba
+      debug:
+        msg: "ejecutanado segunda tarea"
+      changed_when: "'Could not find' in resultado_copia.msg"
+      notify:
+        - mi_handler
+    always:
+    - name: tercera tarea en el bloque always
+      debug:
+        msg: dentro de always
+  - name: cuarta tarea
+    debug:
+      msg: "dentro de cuarta tarea: {{resultado_copia}}"
+  handlers:
+    - name: mi_handler
+      debug:
+        msg: "dentro del handler"

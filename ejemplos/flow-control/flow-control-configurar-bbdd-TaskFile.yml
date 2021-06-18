@@ -1,0 +1,19 @@
+- name: Instala paquetes para la BBDD MariaDB
+  yum:
+    name: "{{item}}"
+  loop: "{{extra_packages}}"
+- name: Recupera un archivo de configuracion en un servidor remoto
+  get_url:
+    url: http://nodo2/archivos/my.cnf
+    dest: /tmp/mi.cnf
+    force: yes
+    owner: mysql
+    group: mysql
+    mode: 0644
+    seuser: system_u
+    setype: mysqld_etc_t
+- name: Levanta el servicio de BBDD
+  service:
+    name: "{{db_service}}"
+    state: started
+    enabled: yes

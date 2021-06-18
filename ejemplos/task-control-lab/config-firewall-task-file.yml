@@ -1,0 +1,20 @@
+- name: instala el paquete para el firewall
+  yum:
+    name: "{{fw_package}}"
+    state: present
+  tags: production
+- name: inicia el servicio para el firewall
+  service:
+    name: "{{fw_service}}"
+    state: started
+  tags: production
+- name: agrega reglas de firewall permanentes
+  firewalld:
+    service: "{{item}}"
+    permanent: yes
+    state: enabled
+  loop:
+    - http
+    - https
+  tags: production
+

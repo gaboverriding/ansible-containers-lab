@@ -1,0 +1,8 @@
+- name: agregar DNS de google
+  hosts: centos
+  tasks:
+    - lineinfile:
+        path: /etc/resolv.conf
+        line: nameserver 8.8.8.8
+        state: present
+

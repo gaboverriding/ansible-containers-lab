@@ -1,0 +1,38 @@
+- name: play para el laboratorio de task control
+  hosts: webservers
+  tasks:
+    - block:
+        - #name: incluye los task files
+          include: install-web-task-file.yml
+          vars:
+            memory: 256
+            web_package: httpd
+            ssl_package: mod_ssl
+            web_service: httpd
+        - include: config-web-task-file.yml
+          vars:
+            https_uri: http://materials.example.com/task_control/https.conf
+            ssl_uri: http://materials.example.com/task_control/ssl.tar.gz
+        - include: config-firewall-task-file.yml
+          vars:
+            fw_package: firewalld
+            fw_service: firewalld
+          tags: production
+      rescue:
+        - name: bloque rescue - yum instalacion
+          yum:
+            name: httpd
+            state: present
+          notify: restart_services
+        - debug:
+            msg: hubo un error con el import de las tareas por lo que se realiza manualmente
+      always:
+        - shell: systemctl status httpd
+  handlers:
+    - name: restart_services
+      service:
+        name: "{{item}}"
+        state: restarted
+      loop:
+        - httpd
+        - firwalld

@@ -1,0 +1,36 @@
+- name: valida que este instalado el paquete para httpd
+  shell: yum list installed httpd
+  register: http_installed
+  failed_when: http_installed.rc == 1
+- block:
+  - name: Recupera config para el httpd
+    get_url:
+      url: "{{https_uri}}"
+      dest: /etc/httpd/conf.d/
+  - name: crea el directorio para ssl
+    file:
+      state: directory
+      path: /etc/httpd/conf.d/ssl
+      mode: 0755
+  - name: crear ruta para logs
+    file:
+      state: directory
+      path: /var/www/html/logs
+      mode: 0755
+  - name: valida si existe el archivo de conf de ssl
+    stat:
+      path: /etc/httpd/conf.d/ssl.conf
+    register: archivo_existe
+  - name: Renombra archivo de config
+    shell: mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.bak
+    when: archivo_existe.stat.exists
+  - name: recupera y extrae archivo de certificaos ssl de la var ssl_uri
+    unarchive:
+      src: "{{ssl_uri}}"
+      dest: /etc/httpd/conf.d/ssl/
+    notify: restart_services
+  - name: crear la pagina de inicio
+    copy:
+      content: 'El equipo {{ansible_hostname}} con IP {{ansible_default_ipv4.address}} ha sido con Ansible'
+      dest: /var/www/html/
+  when: http_installed.rc == 0
